@@ -1,0 +1,10 @@
+*{
+  padding: 0;
+  margin: 0;
+  font-family: 'Helvetica';
+}
+#app {
+  display: flex;
+  font-weight: normal;
+  width: 100vw;
+}
