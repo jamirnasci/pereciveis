@@ -16,6 +16,25 @@ async function getCategorias(){
     }
 }
 
+async function createProduto(nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor){
+    const sql = 'INSERT INTO produto (nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor) VALUES (?,?,?,?,?,?,?,?,?)'
+    try {
+        const conn = await pool.getConnection()
+        const stmt = await conn.prepare(sql)
+        const result = await stmt.execute([nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor])
+        conn.release()
+        return {
+            success: true
+        }
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message
+        }
+    }
+}
+
 module.exports = {
-    getCategorias
+    getCategorias,
+    createProduto
 }

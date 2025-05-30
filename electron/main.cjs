@@ -1,7 +1,7 @@
 const { ipcMain } = require('electron')
 const { app, BrowserWindow } = require('electron/main')
 const path = require('path')
-const { getCategorias } = require('./repositories/produtoRepository.cjs')
+const { getCategorias, createProduto } = require('./repositories/produtoRepository.cjs')
 const { getFornecedores } = require('./repositories/fornecedorRepository.cjs')
 
 const createWindow = () => {
@@ -40,6 +40,17 @@ app.whenReady().then(() => {
             return f.values
         }
         console.log(f.error)
+    })
+    ipcMain.handle('create-produto', async (event, nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor)=>{
+        const result = await createProduto(nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor)
+        if(result.success){
+            return {
+                msg: 'Produto inserido com sucesso'
+            }
+        }
+        return {
+            msg: 'Falha ao cadastrar produto'
+        }
     })
 })
 

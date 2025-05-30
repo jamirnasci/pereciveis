@@ -46,8 +46,8 @@
                     </div>
                 </div>
 
-                <label for="codigo_barras">Código de Barras (opcional):</label>
-                <input class="form-control" type="text" id="codigo_barras" name="codigo_barras">
+                <label for="codigo_barras">Quantidade:</label>
+                <input v-model="quantidade" class="form-control w-25" type="number" id="quantidade" name="quantidade" required>
                 <div class="d-flex">
                     <button class="btn btn-success mt-2 w-25" type="submit">Salvar</button>
                     <button v-on:click="limpar" class="btn btn-warning mt-2 w-25 ml-1" type="submit">Limpar</button>
@@ -69,6 +69,7 @@ const peso = ref('')
 const marca = ref('')
 const dataEntrada = ref('')
 const dataValidade = ref('')
+const quantidade = ref('')
 
 const categorias = ref([])
 const fornecedores = ref([])
@@ -88,8 +89,18 @@ function limpar(){
     dataValidade.value= ''
 }
 
-function salvar(event){
+async function salvar(event){
     event.preventDefault()
-    window.electronAPI.createUser('jamir')
+    await window.electronAPI.createProduto(
+        nome.value,
+        categoria.value,
+        peso.value,
+        marca.value,
+        dataEntrada.value,
+        dataValidade.value,
+        quantidade.value,
+        categoria.value,
+        fornecedor.value
+    )
 }
 </script>
