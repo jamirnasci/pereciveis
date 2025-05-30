@@ -41,8 +41,8 @@ app.whenReady().then(() => {
         }
         console.log(f.error)
     })
-    ipcMain.handle('create-produto', async (event, nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor)=>{
-        const result = await createProduto(nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor)
+    ipcMain.handle('create-produto', async (event, p)=>{
+        const result = await createProduto(p)
         if(result.success){
             return {
                 msg: 'Produto inserido com sucesso'

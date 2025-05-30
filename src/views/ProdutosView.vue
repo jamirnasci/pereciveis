@@ -91,16 +91,16 @@ function limpar(){
 
 async function salvar(event){
     event.preventDefault()
-    await window.electronAPI.createProduto(
-        nome.value,
-        categoria.value,
-        peso.value,
-        marca.value,
-        dataEntrada.value,
-        dataValidade.value,
-        quantidade.value,
-        categoria.value,
-        fornecedor.value
-    )
+    await window.electronAPI.createProduto({
+        nome: nome.value,
+        categoria: categoria.value,
+        peso: peso.value,
+        marca: marca.value,
+        data_entrada: dataEntrada.value,
+        data_validade: dataValidade.value,
+        quantidade: quantidade.value,
+        categoria_idcategoria: categoria.value,
+        fornecedor_idfornecedor: fornecedor.value
+    })
 }
 </script>
