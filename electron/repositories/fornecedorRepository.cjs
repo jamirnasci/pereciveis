@@ -1,6 +1,6 @@
 const {pool} = require('../db/db.cjs')
 
-async function getFornecedores(){
+async function findFornecedores(){
     try {
         const conn = await pool.getConnection()
         const [result] = await conn.execute("SELECT * FROM fornecedor")
@@ -17,5 +17,5 @@ async function getFornecedores(){
 }
 
 module.exports = {
-    getFornecedores
+    findFornecedores
 }

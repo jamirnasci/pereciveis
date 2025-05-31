@@ -45,9 +45,16 @@
                         <input v-model="dataValidade" type="date" class="form-control" id="data-validade" name="data-validade" required />
                     </div>
                 </div>
-
-                <label for="codigo_barras">Quantidade:</label>
-                <input v-model="quantidade" class="form-control w-25" type="number" id="quantidade" name="quantidade" required>
+                <div class="d-flex">
+                    <div class="w-50">
+                        <label for="codigo_barras">Quantidade:</label>
+                        <input v-model="quantidade" class="form-control w-50" type="number" id="quantidade" name="quantidade" required>
+                    </div>
+                    <div class="w-50">
+                        <label for="preco">Preço</label>
+                        <input v-model="preco" class="form-control w-50" type="number" name="preco" id="preco" step=".01">
+                    </div>
+                </div>
                 <div class="d-flex">
                     <button class="btn btn-success mt-2 w-25" type="submit">Salvar</button>
                     <button v-on:click="limpar" class="btn btn-warning mt-2 w-25 ml-1" type="submit">Limpar</button>
@@ -70,13 +77,14 @@ const marca = ref('')
 const dataEntrada = ref('')
 const dataValidade = ref('')
 const quantidade = ref('')
+const preco = ref(0.00)
 
 const categorias = ref([])
 const fornecedores = ref([])
 
 onMounted(async ()=>{
-    categorias.value = await window.electronAPI.getCategorias()
-    fornecedores.value = await window.electronAPI.getFornecedores()
+    categorias.value = await window.electronAPI.findCategorias()
+    fornecedores.value = await window.electronAPI.findFornecedores()
 })
 
 function limpar(){
@@ -87,18 +95,19 @@ function limpar(){
     marca.value = ''
     dataEntrada.value = ''
     dataValidade.value= ''
+    preco.value = 0.00
 }
 
 async function salvar(event){
     event.preventDefault()
     await window.electronAPI.createProduto({
         nome: nome.value,
-        categoria: categoria.value,
         peso: peso.value,
         marca: marca.value,
         data_entrada: dataEntrada.value,
         data_validade: dataValidade.value,
         quantidade: quantidade.value,
+        preco: preco.value,
         categoria_idcategoria: categoria.value,
         fornecedor_idfornecedor: fornecedor.value
     })

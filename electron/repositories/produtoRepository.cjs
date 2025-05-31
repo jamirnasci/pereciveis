@@ -1,6 +1,6 @@
 const { pool } = require("../db/db.cjs");
 
-async function getCategorias() {
+async function findCategorias() {
     try {
         const conn = await pool.getConnection()
         const [result] = await conn.execute("SELECT * FROM categoria")
@@ -17,18 +17,18 @@ async function getCategorias() {
 }
 
 async function createProduto(p) {
-    const sql = 'INSERT INTO produto (nome, categoria, peso, marca, data_entrada, data_validade, quantidade, categoria_idcategoria, fornecedor_idfornecedor) VALUES (?,?,?,?,?,?,?,?,?)'
+    const sql = 'INSERT INTO produto (nome, peso, marca, data_entrada, data_validade, quantidade, preco,categoria_idcategoria, fornecedor_idfornecedor) VALUES (?,?,?,?,?,?,?,?,?)'
     try {
         const conn = await pool.getConnection()
         const stmt = await conn.prepare(sql)
         const result = await stmt.execute([
             p.nome,
-            p.categoria,
             p.peso,
             p.marca,
             p.data_entrada,
             p.data_validade,
             p.quantidade,
+            p.preco,
             p.categoria_idcategoria,
             p.fornecedor_idfornecedor
         ])
@@ -44,7 +44,25 @@ async function createProduto(p) {
     }
 }
 
+async function findAllProdutos() {
+    const sql = 'SELECT p.idproduto, p.nome, p.quantidade, p.preco, c.nome AS categoria FROM produto p INNER JOIN categoria c ON p.categoria_idcategoria = c.idcategoria'
+    try {
+        const conn = await pool.getConnection()
+        const [result] = await conn.execute(sql)
+        return {
+            success: true,
+            values: result
+        }
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message
+        }
+    }
+}
+
 module.exports = {
-    getCategorias,
-    createProduto
+    findCategorias,
+    createProduto,
+    findAllProdutos
 }

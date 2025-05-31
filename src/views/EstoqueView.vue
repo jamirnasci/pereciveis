@@ -13,9 +13,7 @@
                 </div>
             </div>
             <div class="produtos-container p-2">
-                <produto-card nome="Arroz" categoria="Grãos" quantidade="2"/>
-                <produto-card nome="Arroz" categoria="Grãos" quantidade="2"/>
-                <produto-card nome="Arroz" categoria="Grãos" quantidade="2"/>
+                <produto-card v-for="p in produtos" :nome="p.nome" :categoria="p.categoria" :quantidade="p.quantidade"/>
             </div>
         </div>
     </div>
@@ -25,6 +23,13 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import ProdutoCard from '@/components/ProdutoCard.vue';
+import { onMounted, ref } from 'vue';
+
+const produtos = ref([])
+
+onMounted(async ()=>{
+    produtos.value = await window.electronAPI.findAllProdutos()
+})
 
 </script>
 
