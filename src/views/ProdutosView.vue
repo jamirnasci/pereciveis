@@ -11,8 +11,9 @@
                     </div>
                     <div class="ml-2 w-50">
                         <label for="categoria">Categoria:</label><br>
-                        <select  v-model="categoria" class="form-control" id="categoria" name="categoria">
-                            <option v-for="c in categorias" :key="c.idcategoria" :value="c.idcategoria">{{ c.nome }}</option>
+                        <select v-model="categoria" class="form-control" id="categoria" name="categoria">
+                            <option v-for="c in categorias" :key="c.idcategoria" :value="c.idcategoria">{{ c.nome }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -20,7 +21,8 @@
                     <div class="w-50">
                         <label for="fornecedor">Fornecedor:</label>
                         <select v-model="fornecedor" class="form-control" id="fornecedor" name="fornecedor">
-                            <option v-for="f in fornecedores" :key="f.idfornecedor" :value="f.idfornecedor">{{ f.nome }}</option>
+                            <option v-for="f in fornecedores" :key="f.idfornecedor" :value="f.idfornecedor">{{ f.nome }}
+                            </option>
                         </select>
                     </div>
                     <input class="btn btn-primary ml-2" type="button" value="Cadastrar Fornecedor">
@@ -38,21 +40,25 @@
                 <div class="d-flex">
                     <div class="w-50">
                         <label for="data-entrada">Data de entrada:</label>
-                        <input v-model="dataEntrada" type="date" class="form-control" id="data-entrada" name="data-entrada" required />
+                        <input v-model="dataEntrada" type="date" class="form-control" id="data-entrada"
+                            name="data-entrada" required />
                     </div>
                     <div class="w-50 ml-2">
                         <label for="data-validade">Data de validade:</label>
-                        <input v-model="dataValidade" type="date" class="form-control" id="data-validade" name="data-validade" required />
+                        <input v-model="dataValidade" type="date" class="form-control" id="data-validade"
+                            name="data-validade" required />
                     </div>
                 </div>
                 <div class="d-flex">
                     <div class="w-50">
                         <label for="codigo_barras">Quantidade:</label>
-                        <input v-model="quantidade" class="form-control w-50" type="number" id="quantidade" name="quantidade" required>
+                        <input v-model="quantidade" class="form-control w-50" type="number" id="quantidade"
+                            name="quantidade" required>
                     </div>
                     <div class="w-50">
                         <label for="preco">Preço</label>
-                        <input v-model="preco" class="form-control w-50" type="number" name="preco" id="preco" step=".01">
+                        <input v-model="preco" class="form-control w-50" type="number" name="preco" id="preco"
+                            step=".01">
                     </div>
                 </div>
                 <div class="d-flex">
@@ -68,6 +74,7 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const nome = ref('')
 const categoria = ref('')
@@ -78,28 +85,64 @@ const dataEntrada = ref('')
 const dataValidade = ref('')
 const quantidade = ref('')
 const preco = ref(0.00)
-
 const categorias = ref([])
 const fornecedores = ref([])
 
-onMounted(async ()=>{
+
+const idproduto = ref('')
+const route = useRoute()
+const newProduct = ref(false)
+onMounted(async () => {
     categorias.value = await window.electronAPI.findCategorias()
     fornecedores.value = await window.electronAPI.findFornecedores()
+
+    if (route.params.idproduto) {
+        const [produto] = await window.electronAPI.findProdutoById(route.params.idproduto)
+        nome.value = produto.nome
+        categoria.value = produto.categoria_idcategoria
+        fornecedor.value = produto.fornecedor_idfornecedor
+        peso.value = produto.peso
+        marca.value = produto.marca
+        dataEntrada.value = produto.data_entrada
+        dataValidade.value = produto.data_validade
+        preco.value = produto.preco
+        quantidade.value = produto.quantidade
+        newProduct.value = true
+        idproduto.value = produto.idproduto
+    }
 })
 
-function limpar(){
+function limpar() {
     nome.value = ''
     categoria.value = ''
     fornecedor.value = ''
     peso.value = ''
     marca.value = ''
     dataEntrada.value = ''
-    dataValidade.value= ''
+    dataValidade.value = ''
     preco.value = 0.00
 }
 
-async function salvar(event){
+async function salvar(event) {
     event.preventDefault()
+
+    if (newProduct.value) {
+        const result = await window.electronAPI.updateProduto({
+            nome: nome.value,
+            peso: peso.value,
+            marca: marca.value,
+            data_entrada: dataEntrada.value,
+            data_validade: dataValidade.value,
+            quantidade: quantidade.value,
+            preco: preco.value,
+            categoria_idcategoria: categoria.value,
+            fornecedor_idfornecedor: fornecedor.value,
+            idproduto: idproduto.value
+        })
+       alert(result.msg)
+        return
+    }
+
     await window.electronAPI.createProduto({
         nome: nome.value,
         peso: peso.value,

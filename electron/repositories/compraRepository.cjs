@@ -3,9 +3,9 @@ const { pool } = require("../db/db.cjs")
 async function createCompraLista(listaCompra, vendaId) {
     const sql = 'INSERT INTO lista_compra(produto_idproduto, quant_item, venda_idvenda) VALUES(?, ?, ?)'
     let affectedRows = 0
-    
+    let conn
     try {
-        const conn = await pool.getConnection()
+        conn = await pool.getConnection()
         for (const compra of listaCompra) {
             const stmt = await conn.prepare(sql)
             const result = await stmt.execute([
@@ -24,29 +24,11 @@ async function createCompraLista(listaCompra, vendaId) {
             success: false,
             error: error.message
         }
+    }finally{
+        if(conn) conn.release()
     }
 }
-
-async function findAllVendas() {
-    const sql = 'SELECT * FROM venda'
-    try {
-        const conn = await pool.getConnection()
-        const [result] = await conn.execute(sql)
-        return {
-            success: true,
-            values: result
-        }
-    } catch (error) {
-        return {
-            success: false,
-            error: error.message
-        }
-    }
-}
-
-
 
 module.exports = {
-    createCompraLista,
-    findAllVendas
+    createCompraLista
 }

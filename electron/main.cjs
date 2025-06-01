@@ -1,10 +1,11 @@
 const { ipcMain } = require('electron')
 const { app, BrowserWindow } = require('electron/main')
 const path = require('path')
-const { createProduto, findCategorias, findAllProdutos } = require('./repositories/produtoRepository.cjs')
+const { createProduto, findCategorias, findAllProdutos, findProdutoById, updateProduto } = require('./repositories/produtoRepository.cjs')
 const { findFornecedores } = require('./repositories/fornecedorRepository.cjs')
-const { createVenda } = require('./repositories/vendaRepository.cjs')
-const { createCompraLista, findAllVendas, findListaComprasByVendaId } = require('./repositories/compraRepository.cjs')
+const { createVenda, findAllVendas } = require('./repositories/vendaRepository.cjs')
+const { createCompraLista } = require('./repositories/compraRepository.cjs')
+const { error } = require('console')
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -90,6 +91,28 @@ app.whenReady().then(() => {
         return {
             msg: 'Falha ao listar compras'
         }
+    })
+    ipcMain.handle('find-produto-by-id', async (event, idproduto)=>{
+        const result = await findProdutoById(idproduto)
+        if(result.success){
+            return result.values
+        }
+        console.log(error)
+        return {
+            msg: 'Falha ao procurar produto'
+        }
+    })
+    ipcMain.handle('update-produto', async (event, produto)=>{
+        const result = await updateProduto(produto)
+        if(result.success){
+            return {
+                msg: 'Produto atualizado !'
+            }
+        }
+        console.log(result.error)
+        return {
+                msg: 'Falha ao atualizar produto'
+            }
     })
 })
 

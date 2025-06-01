@@ -1,8 +1,9 @@
 const {pool} = require('../db/db.cjs')
 
 async function findFornecedores(){
+    let conn
     try {
-        const conn = await pool.getConnection()
+        conn = await pool.getConnection()
         const [result] = await conn.execute("SELECT * FROM fornecedor")
         return {
             success: true,
@@ -13,6 +14,8 @@ async function findFornecedores(){
             success: false,
             error: error.message
         }
+    } finally{
+        if(conn) conn.release()
     }
 }
 

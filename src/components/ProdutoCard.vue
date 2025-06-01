@@ -14,12 +14,24 @@
             </div>
         </div>
         <div>
-            <button class="btn btn-primary">Editar</button>
+            <button v-on:click="produtoForm" class="btn btn-primary">Editar</button>
             <button class="btn btn-danger ml-1">Excluir</button>
         </div>
     </div>
 </template>
 
 <script setup lang="js">
-    const props = defineProps(['nome', 'categoria', 'quantidade'])
+import { useRouter } from 'vue-router';
+
+const props = defineProps(['nome', 'categoria', 'quantidade', 'handleModal', 'idproduto'])
+const router = useRouter()
+
+function produtoForm() {
+    router.replace({
+        name: 'produtosEditar',
+        params: {
+            idproduto: props.idproduto
+        }
+    })
+}
 </script>

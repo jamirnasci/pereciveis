@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="produtos-container p-2">
-                <produto-card v-for="p in produtos" :nome="p.nome" :categoria="p.categoria" :quantidade="p.quantidade"/>
+                <produto-card v-for="p in produtos" :idproduto="p.idproduto" :nome="p.nome" :categoria="p.categoria" :quantidade="p.quantidade"/>
             </div>
         </div>
     </div>
