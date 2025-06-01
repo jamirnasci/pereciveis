@@ -45,7 +45,10 @@ async function createProduto(p) {
 }
 
 async function findAllProdutos() {
-    const sql = 'SELECT p.idproduto, p.nome, p.quantidade, p.preco, c.nome AS categoria FROM produto p INNER JOIN categoria c ON p.categoria_idcategoria = c.idcategoria'
+    const sql = `SELECT p.idproduto, p.nome, p.quantidade, p.preco, c.nome AS categoria 
+        FROM produto p INNER JOIN categoria c ON p.categoria_idcategoria = c.idcategoria
+        WHERE p.quantidade > 0
+    `
     try {
         const conn = await pool.getConnection()
         const [result] = await conn.execute(sql)

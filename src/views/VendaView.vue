@@ -105,12 +105,15 @@ async function finalizar(){
     }
     const vendaId = await window.electronAPI.createVenda(venda)
 
-    const produtoIdLista = listaCompras.value.map( (item) =>{
-        return {produto_idproduto: item.idproduto }
+    const produtoLista = listaCompras.value.map( (item) =>{
+        return {
+            produto_idproduto: item.idproduto,
+            quantidade: item.quantidade 
+        }
     })
-    console.log(produtoIdLista)
+    console.log(produtoLista)
     console.log(venda)
-    const result = await window.electronAPI.createCompraLista(produtoIdLista, vendaId)
+    const result = await window.electronAPI.createCompraLista(produtoLista, vendaId)
     alert(result.msg)
 }
 </script>

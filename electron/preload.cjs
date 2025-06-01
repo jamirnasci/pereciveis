@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     createProduto: (p) => ipcRenderer.invoke('create-produto', p),
     findAllProdutos: () => ipcRenderer.invoke('find-all-produtos'),
     createVenda: (venda) => ipcRenderer.invoke('create-venda', venda),
-    createCompraLista: (listaCompra, vendaId) => ipcRenderer.invoke('create-lista-compra', listaCompra, vendaId)
+    createCompraLista: (listaCompra, vendaId) => ipcRenderer.invoke('create-lista-compra', listaCompra, vendaId),
+    findAllVendas: () => ipcRenderer.invoke('find-all-vendas')
 })
