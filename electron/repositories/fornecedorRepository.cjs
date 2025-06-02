@@ -19,6 +19,34 @@ async function findFornecedores(){
     }
 }
 
+async function createFornecedor(forn){
+    let conn
+    const sql = 'INSERT INTO fornecedor(nome, telefone, email, endereco) VALUES(?,?,?,?)'
+    try {
+        conn = await pool.getConnection()
+        const stmt = await conn.prepare(sql)
+        const result = await stmt.execute([
+            forn.nome,
+            forn.telefone,
+            forn.email,
+            forn.endereco
+        ])
+        if(result[0].affectedRows > 0){
+            return {
+                success: true
+            }
+        }
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message
+        }
+    } finally{
+        if(conn) conn.release()
+    }
+}
+
 module.exports = {
-    findFornecedores
+    findFornecedores,
+    createFornecedor
 }

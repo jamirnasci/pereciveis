@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     createUser: (nome) => ipcRenderer.invoke('create-user', nome),
     findCategorias: () => ipcRenderer.invoke('find-categorias'),
     findFornecedores: () => ipcRenderer.invoke('find-fornecedores'),
+    createFornecedor: (forn) => ipcRenderer.invoke('create-fornecedor', forn),
     createProduto: (p) => ipcRenderer.invoke('create-produto', p),
     findAllProdutos: () => ipcRenderer.invoke('find-all-produtos'),
     createVenda: (venda) => ipcRenderer.invoke('create-venda', venda),

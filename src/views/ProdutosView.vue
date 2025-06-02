@@ -25,7 +25,7 @@
                             </option>
                         </select>
                     </div>
-                    <input class="btn btn-primary ml-2" type="button" value="Cadastrar Fornecedor">
+                    <input v-on:click="handleModal" class="btn btn-primary ml-2" type="button" value="Cadastrar Fornecedor">
                 </div>
                 <div class="d-flex">
                     <div class="w-50">
@@ -68,6 +68,7 @@
             </form>
         </div>
     </div>
+    <fornecedor-modal v-if="modalDisplay === 'flex'" :handle-modal="handleModal" />
 </template>
 
 <script setup lang="js">
@@ -75,6 +76,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import FornecedorModal from '@/components/FornecedorModal.vue';
 
 const nome = ref('')
 const categoria = ref('')
@@ -87,7 +89,7 @@ const quantidade = ref('')
 const preco = ref(0.00)
 const categorias = ref([])
 const fornecedores = ref([])
-
+const modalDisplay = ref('none')
 
 const idproduto = ref('')
 const route = useRoute()
@@ -154,5 +156,10 @@ async function salvar(event) {
         categoria_idcategoria: categoria.value,
         fornecedor_idfornecedor: fornecedor.value
     })
+}
+
+function handleModal(){
+    const display = modalDisplay.value == 'flex' ? 'none' : 'flex'
+    modalDisplay.value = display
 }
 </script>

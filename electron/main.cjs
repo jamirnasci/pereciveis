@@ -2,7 +2,7 @@ const { ipcMain } = require('electron')
 const { app, BrowserWindow } = require('electron/main')
 const path = require('path')
 const { createProduto, findCategorias, findAllProdutos, findProdutoById, updateProduto } = require('./repositories/produtoRepository.cjs')
-const { findFornecedores } = require('./repositories/fornecedorRepository.cjs')
+const { findFornecedores, createFornecedor } = require('./repositories/fornecedorRepository.cjs')
 const { createVenda, findAllVendas } = require('./repositories/vendaRepository.cjs')
 const { createCompraLista } = require('./repositories/compraRepository.cjs')
 const { error } = require('console')
@@ -43,6 +43,18 @@ app.whenReady().then(() => {
             return f.values
         }
         console.log(f.error)
+    })
+    ipcMain.handle('create-fornecedor', async (event, forn)=>{
+        const result = await createFornecedor(forn)
+        if(result.success){
+            return {
+                msg: 'Fornecedor cadastrado !'
+            }
+        }
+        console.log(result.error)
+        return {
+            msg: 'Falha ao cadastrar fornecedor'
+        }
     })
     ipcMain.handle('create-produto', async (event, p) => {
         const result = await createProduto(p)
