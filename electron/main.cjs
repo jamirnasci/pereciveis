@@ -4,7 +4,7 @@ const path = require('path')
 const { createProduto, findCategorias, findAllProdutos, findProdutoById, updateProduto } = require('./repositories/produtoRepository.cjs')
 const { findFornecedores, createFornecedor } = require('./repositories/fornecedorRepository.cjs')
 const { createVenda, findAllVendas } = require('./repositories/vendaRepository.cjs')
-const { createCompraLista } = require('./repositories/compraRepository.cjs')
+const { createCompraLista, findListaCompras } = require('./repositories/compraRepository.cjs')
 const { error } = require('console')
 
 const createWindow = () => {
@@ -92,6 +92,16 @@ app.whenReady().then(() => {
         console.log(result.error)
         return {
             msg: 'Falha ao cadastrar compra !'
+        }
+    })
+    ipcMain.handle('find-lista-compras', async (event, idvenda)=>{
+        const lista = await findListaCompras(idvenda)
+        if(lista.success){
+            return lista.values
+        }
+        console.log(lista.error)
+        return {
+            msg: 'Falha ao buscar lista compras'
         }
     })
     ipcMain.handle('find-all-vendas', async ()=>{

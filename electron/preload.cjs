@@ -12,5 +12,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     createCompraLista: (listaCompra, vendaId) => ipcRenderer.invoke('create-lista-compra', listaCompra, vendaId),
     findAllVendas: () => ipcRenderer.invoke('find-all-vendas'),
     findProdutoById: (idproduto) => ipcRenderer.invoke('find-produto-by-id', idproduto),
-    updateProduto: (produto) => ipcRenderer.invoke('update-produto', produto)
+    updateProduto: (produto) => ipcRenderer.invoke('update-produto', produto),
+    findListaCompras: (idvenda) => ipcRenderer.invoke('find-lista-compras', idvenda)
 })

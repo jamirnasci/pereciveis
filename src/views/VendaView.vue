@@ -111,8 +111,6 @@ async function finalizar(){
             quantidade: item.quantidade 
         }
     })
-    console.log(produtoLista)
-    console.log(venda)
     const result = await window.electronAPI.createCompraLista(produtoLista, vendaId)
     alert(result.msg)
 }

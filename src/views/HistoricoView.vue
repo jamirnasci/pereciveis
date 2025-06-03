@@ -18,22 +18,25 @@
                             <td>{{ formatDate(v.data) }}</td>
                             <td>{{ v.total_itens }}</td>
                             <td>R$ {{ v.total_compra }}</td>
-                            <td></td>
+                            <td><button class="btn btn-success" v-on:click="handleListaCompraModal(v.idvenda)">Ver Itens</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
+    <lista-compra-modal :idvenda="idvenda" v-if="modalVisible" :handle-modal="handleListaCompraModal" />
 </template>
 
 <script setup lang="js">
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { onMounted, ref } from 'vue';
+import ListaCompraModal from '@/components/ListaCompraModal.vue';
 
 const vendas = ref([])
+const modalVisible = ref(false)
+const idvenda = ref(null)
 
 onMounted(async () => {
     vendas.value = await window.electronAPI.findAllVendas()
@@ -51,6 +54,13 @@ function formatDate(data) {
 
     const formattedDate = date.toLocaleString('pt-BR', options);
     return formattedDate
+}
+
+function handleListaCompraModal(id) {
+    modalVisible.value = modalVisible.value ? false : true
+    if (id) {
+        idvenda.value = id
+    }
 }
 
 </script>
