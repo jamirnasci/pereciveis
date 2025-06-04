@@ -1,6 +1,21 @@
-# pereciveis
+Perecíveis apenas é um protótipo de uma idéia para a criação de um sistema para gerenciar alimentos perecíveis
 
-This template should help get you started developing with Vue 3 in Vite.
+### Funcionalidades
+
+- Cadastro de produtos
+- Cadastro de forecedores
+- Alteração automática de estoque após venda ou edição
+- Aba de vendas dos produtos
+- Histórico de caixa
+ 
+### Tecnologias utilizadas
+
+- Vue.js
+- Electron.js
+- Vite
+- Bootstrap
+- Primevue
+- MySQL
 
 ## Recommended IDE Setup
 
@@ -26,6 +41,11 @@ npm run dev
 
 ```sh
 npm run build
+```
+
+### Executar como electron
+```sh
+npm start
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
